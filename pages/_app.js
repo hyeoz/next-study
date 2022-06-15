@@ -1,8 +1,16 @@
 import "../styles/globals.css";
 import "semantic-ui-css/semantic.min.css";
+import Footer from "../src/components/Footer";
+import Top from "../src/components/Top";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <div style={{ margin: "0 auto", width: 1000 }}>
+      <Top />
+      <Component {...pageProps} />
+      <Footer />
+    </div>
+  );
 }
 
 export default MyApp;
