@@ -80,7 +80,7 @@ export async function getServerSideProps(context) {
 
   // SSR 로 동작하기 때문에 node.js 환경변수가 사용됨
 
-  console.log(data);
+  // console.log(data);
 
   return {
     props: {
