@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Loader } from "semantic-ui-react";
 import Item from "../../src/components/Item";
 
-export default function Post({ item }) {
+export default function Post({ item, name }) {
   // SSR 로 받아온 item 을 사용 가능
   // const router = useRouter();
   // const { id } = router.query;
@@ -47,6 +47,7 @@ export default function Post({ item }) {
             {/* meta 를 통해 소스코드에 데이터를 노출시켜 SEO 최적화 가능 */}
             <meta name="description" content={item.description}></meta>
           </Head>
+          {name} 환경입니다.
           <Item item={item} />
         </>
       )}
@@ -74,13 +75,17 @@ export async function getServerSideProps(context) {
   const id = context.params.id;
   const apiUrl = `https://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
   const res = await axios.get(apiUrl);
+  // const res = await axios.get(process.env.NEXT_PUBLIC_API_URL);
   const { data } = res;
+
+  // SSR 로 동작하기 때문에 node.js 환경변수가 사용됨
 
   console.log(data);
 
   return {
     props: {
       item: data,
+      name: process.env.name,
     },
   };
 }

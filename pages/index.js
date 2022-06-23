@@ -1,3 +1,4 @@
+import React from "react";
 import axios from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -9,8 +10,8 @@ export default function Home() {
   const [list, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const API_URL =
-    "https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline";
+  // 현재 CSR 을 하고있기 때문에 browser 환경변수가 사용됨
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   function getData() {
     axios.get(API_URL).then((res) => {
