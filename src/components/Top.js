@@ -13,8 +13,8 @@ export default function Top() {
           />
         </div>
         <Header as="h1">넥스트</Header>
-        <Gnb />
       </div>
+      <Gnb />
     </div>
   );
 }
