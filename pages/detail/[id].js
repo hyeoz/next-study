@@ -1,17 +1,27 @@
 import axios from "axios";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { ItemMeta, Loader } from "semantic-ui-react";
 import Item from "../../src/components/Item";
 
 export default function Post({ item, name }) {
-  return (
-    <>
-      {/* {isLoading ? (
-        <Loader inline="centered" active>
+  const router = useRouter();
+  // console.log(router.isFallback, "===> detail fallback");
+
+  // isFallback -> getStaticPaths 에서 fallback = true 를 했을 때 로드가 됐는지 안됐는지 확인 가능
+  // 분기처리로 로딩화면 뜨도록
+  if (router.isFallback) {
+    return (
+      <div style={{ padidng: "100px 0" }}>
+        <Loader active inline="centered">
           Loading...
         </Loader>
-      ) : (
-        <Item item={item} />
-      )} */}
+      </div>
+    );
+  }
+
+  return (
+    <>
       {item && (
         <>
           <Head>
@@ -29,13 +39,22 @@ export default function Post({ item, name }) {
 
 // getStaticPaths
 export async function getStaticPaths() {
+  const apiUrl = process.env.apiUrl;
+  const res = await axios.get(apiUrl);
+  const { data } = res;
+
   return {
-    paths: [
-      { params: { id: "740" } },
-      { params: { id: "730" } },
-      { params: { id: "729" } },
-    ],
-    fallback: false,
+    // paths: [
+    //   { params: { id: "740" } },
+    //   { params: { id: "730" } },
+    //   { params: { id: "729" } },
+    // ],
+    paths: data.map((item) => ({
+      params: {
+        id: String(item.id),
+      },
+    })),
+    fallback: true,
     /* 
       false -> 없는 id 에 대해 대응하지 않음
       true -> 없는 id 는 최초로는 일반적인 방법으로 불러오고 두번째부터 정적파일을 확인할 수 있음
